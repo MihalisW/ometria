@@ -158,7 +158,7 @@ class Resource(object):
         sig = b64encode(HMAC(self.client.secret, url + data, sha256).hexdigest())
 
         response = requests.request(method, url, data=data, headers={
-            "Auth-Signature": sig, "Auth-API-Key": self.client.key,
+            "Auth-Signature": sig, "X-Ometria-Auth": self.client.key,
             "Accept": "application/json", "Content-Type": "application/json"})
 
         return self._handle_response(response)
@@ -188,7 +188,7 @@ class Client(object):
         >>> c = Client(key="...", secret="...")
         >>> c.customers(1234).orders.get()
     """
-    def __init__(self, key, secret, version="1"):
+    def __init__(self, key, secret, version="2"):
         self.key = key
         self.secret = secret
         self.version = version
